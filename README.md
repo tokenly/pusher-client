@@ -1,0 +1,1 @@
+A client component for the client-side messaging pusher service.
