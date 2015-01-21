@@ -22,15 +22,17 @@ class PusherClientServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->package('tokenly/pusher-client', 'pusher-client', __DIR__.'/../../');
+        $this->package('tokenly/pusher-client', 'pusher-client', __DIR__.'/../../../');
 
         $this->app->bind('Nc\FayeClient\Client', function($app) {
-            $client = new \Nc\FayeClient\Client(new \Nc\FayeClient\Adapter\CurlAdapter(), $app['config']['pusher.serverUrl'].'/public');
+            $config = $app['config']['pusher-client::pusher'];
+            $client = new \Nc\FayeClient\Client(new \Nc\FayeClient\Adapter\CurlAdapter(), $config['serverUrl'].'/public');
             return $client;
         });
 
         $this->app->bind('Tokenly\PusherClient\Client', function($app) {
-            $client = new \Tokenly\PusherClient\Client($app->make('Nc\FayeClient\Client'), $app['config']['pusher.password']);
+            $config = $app['config']['pusher-client::pusher'];
+            $client = new \Tokenly\PusherClient\Client($app->make('Nc\FayeClient\Client'), $config['password']);
             return $client;
         });
     }
