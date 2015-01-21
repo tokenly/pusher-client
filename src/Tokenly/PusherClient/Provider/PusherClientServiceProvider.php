@@ -29,7 +29,7 @@ class PusherClientServiceProvider extends ServiceProvider
             return $client;
         });
 
-        $this->app->bind('Tokenly\PusherClient\PusherClient', function($app) {
+        $this->app->bind('Tokenly\PusherClient\Client', function($app) {
             $client = new \Tokenly\PusherClient\Client($app->make('Nc\FayeClient\Client'), $app['config']['pusher.password']);
             return $client;
         });
