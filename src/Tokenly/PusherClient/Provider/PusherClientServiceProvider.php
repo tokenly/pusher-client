@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 /*
-* PusherClientServiceProvider
+* PusherClientServiceProvider for Laravel 5
 */
 class PusherClientServiceProvider extends ServiceProvider
 {
@@ -38,12 +38,12 @@ class PusherClientServiceProvider extends ServiceProvider
 
     protected function bindConfig() {
         // simple config
-        $server_url = getenv('PUSHER_SERVER_URL') ?: 'http://pusher.dev01.tokenly.co';
+        $server_url = env('PUSHER_SERVER_URL') ?: 'http://pusher.dev01.tokenly.co';
 
         $config = [
             'tokenlyPusher.serverUrl' => $server_url,
-            'tokenlyPusher.clientUrl' => getenv('PUSHER_CLIENT_URL', $server_url),
-            'tokenlyPusher.password'  => getenv('PUSHER_PASSWORD', null),
+            'tokenlyPusher.clientUrl' => env('PUSHER_CLIENT_URL', $server_url),
+            'tokenlyPusher.password'  => env('PUSHER_PASSWORD', null),
         ];
 
         // set the laravel config
