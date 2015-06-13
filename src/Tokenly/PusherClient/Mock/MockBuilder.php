@@ -26,7 +26,7 @@ class MockBuilder
         $pusher_recorder = new \stdClass();
         $pusher_recorder->calls = [];
 
-        if ($test_case === null) { $test_case = new Tokenly\PusherClient\Mock\MockTestCase(); }
+        if ($test_case === null) { $test_case = new \Tokenly\PusherClient\Mock\MockTestCase(); }
 
         $pusher_client_mock = $test_case->getMockBuilder('\Tokenly\PusherClient\Client')
             ->disableOriginalConstructor()
