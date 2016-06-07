@@ -3,9 +3,8 @@
 namespace Tokenly\PusherClient\Mock;
 
 use Exception;
-use Illuminate\Foundation\Application;
-use \PHPUnit_Framework_MockObject_MockBuilder;
-use \PHPUnit_Framework_TestCase;
+use Mockery as m;
+use Tokenly\PusherClient\Mock\Notifications;
 
 /**
 * Pusher Mock Builder
@@ -14,32 +13,48 @@ use \PHPUnit_Framework_TestCase;
 class MockBuilder
 {
 
-    function __construct(Application $app) {
-        $this->app = $app;
-    }
+    static $INSTANCE;
+
+    protected $notifications = null;
+    protected $mock_client   = null;
     
+    public function __construct() {
+        $this->notifications = new Notifications();
+    }
 
     ////////////////////////////////////////////////////////////////////////
 
-    public function installPusherMockClient(PHPUnit_Framework_TestCase $test_case=null) {
-        // record the calls
-        $pusher_recorder = new \stdClass();
-        $pusher_recorder->calls = [];
+    public function installPusherMockClient() {
+        if (!self::$INSTANCE) {
+            self::$INSTANCE = $this;
+        }
 
-        if ($test_case === null) { $test_case = new \Tokenly\PusherClient\Mock\MockTestCase(); }
+        return self::$INSTANCE->setupMock();
+    }
 
-        $pusher_client_mock = $test_case->getMockBuilder('\Tokenly\PusherClient\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
 
-        // install the pusher client into the DI container
-        $this->app->bind('Tokenly\PusherClient\Client', function($app) use ($pusher_client_mock) {
-            return $pusher_client_mock;
+    public function setupMock() {
+        if (is_null($this->mock_client)) {
+            $this->mock_client = m::mock('Tokenly\PusherClient\Client', function ($mock_builder) {
+                $mock_builder->shouldReceive('send')->andReturnUsing(function($channel, $data=[], $ext=[]) {
+                    $this->notifications->recordNotification($channel, $data);
+                    return;
+                });
+            })->makePartial();
+        } else {
+            // not the first time
+            //   reset the called api methods
+            $this->notifications->reset();
+        }
+
+        // overwrite Laravel binding
+        app()->bind('Tokenly\PusherClient\Client', function($app) {
+            return $this->mock_client;
         });
 
 
         // return an object to check the calls
-        return $pusher_recorder;
+        return $this->notifications;
     }
 
     ////////////////////////////////////////////////////////////////////////
