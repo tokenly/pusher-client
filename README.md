@@ -3,7 +3,7 @@ A client component for the client-side messaging pusher service.
 ### Installation
 
 - `composer require tokenly/pusher-client`
-- Add `Tokenly\PusherClient\Provider\Client::class` to the list of service providers
+- Add `Tokenly\PusherClient\Provider\PusherClientServiceProvider::class` to the list of service providers
 
 ### Environment Variables
 
