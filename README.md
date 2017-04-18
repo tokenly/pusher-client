@@ -9,26 +9,25 @@ A client component for the client-side messaging pusher service.
 
 Set the following environment variables
 
-`PUSHER_SERVER_URL` (optional, defaults to https://pusher.tokenly.com)
-`PUSHER_CLIENT_URL` (optional, defaults to the server URL)
-`PUSHER_PASSWORD`   (required for Tokenly services)
+- `PUSHER_SERVER_URL` (optional, defaults to https://pusher.tokenly.com)
+- `PUSHER_CLIENT_URL` (optional, defaults to the server URL)
+- `PUSHER_PASSWORD`   (required for Tokenly services)
 
 ### Server-side Usage
 
 #### Send an event
 
 ```php
-
-$pusher = app(\Tokenly\PusherClient\Client::class);
 $channel = 'my-event-channel-name';
 $data = json_encode(['fromUser' => 'fred', 'messageId' => 101, 'messageText' => 'hello world!']);
-$pusher->send($channel, $data);
 
+$pusher = app(\Tokenly\PusherClient\Client::class);
+$pusher->send($channel, $data);
 ```
 
 ### Client-side Usage
 
-See the (pusher-client.js example)[examples/js/pusher-client.js] for the client javascript code.
+See the [pusher-client.js example](examples/js/pusher-client.js) for the client javascript code.
 
 #### Step 1: Include the two libraries
 
