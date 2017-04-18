@@ -38,7 +38,7 @@ class PusherClientServiceProvider extends ServiceProvider
 
     protected function bindConfig() {
         // simple config
-        $server_url = env('PUSHER_SERVER_URL') ?: 'http://pusher.tokenly.co';
+        $server_url = env('PUSHER_SERVER_URL') ?: 'https://pusher.tokenly.com';
 
         $config = [
             'tokenlyPusher.serverUrl' => $server_url,

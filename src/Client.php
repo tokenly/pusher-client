@@ -13,7 +13,7 @@ class Client {
 
     public function send($channel, $data = array(), $ext = array()) {
         if (!isset($ext['password'])) { $ext['password'] = $this->password; }
-        return $this->faye->send($channel, $data, $ext);
+        return $this->faye->send('/'.ltrim($channel, '/'), $data, $ext);
     }
 
 
