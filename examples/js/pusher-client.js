@@ -19,6 +19,11 @@ window.PusherClient = function(window) {
       return null;
     }
 
+    // remove leading slash if any
+    if (channelName.indexOf('/') === 0) {
+      channelName = channelName.substr(1)
+    }
+
     client = new window.Faye.Client(pusherUrl + "/public");
     client.subscribe("/" + channelName, function(data) {
       callbackFn(data);
